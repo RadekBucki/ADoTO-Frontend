@@ -13,7 +13,7 @@ img {
 .block-icon {
     position: relative;
     display: inline-flex;
-  }
+}
   
   .icon-tag {
     position: absolute;
@@ -21,4 +21,4 @@ img {
     top: 35%;
     right: 38%;
     z-index: 1;
-  }
+}
