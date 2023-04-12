@@ -1,0 +1,29 @@
+.map-component {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.map {
+  height: 520px;
+  width: 1200px;
+  margin: 30px;
+  border: 1px solid gray;
+  background-color: rgb(125, 193, 220);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: whitesmoke;
+  border-radius: 5px;
+}
+
+.leaflet-container {
+  width: 1200px;
+  height: 520px;
+  border-radius: 5px;
+}
+
+.leaflet-control-attribution {
+  font-size: 10px;
+}
