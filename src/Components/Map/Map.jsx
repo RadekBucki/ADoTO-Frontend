@@ -57,6 +57,15 @@ const Map = () => {
                     </Marker>
                 </MapContainer>
             </div>
+            <div>
+                {coordinates.map((cord, index) => (
+                    <div>
+                        <p key={index}>
+                            {cord.lng} x {cord.lat}
+                        </p>
+                    </div>
+                ))}
+            </div>
         </section>
     );
 };
