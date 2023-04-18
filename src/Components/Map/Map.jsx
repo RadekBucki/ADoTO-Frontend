@@ -23,7 +23,9 @@ const Map = () => {
         setCoordinates(e.layer.getLatLngs()[0]);
     };
     const handleEdit = (e) => {
-        setCoordinates(e.layer.getLatLngs()[0]);
+        e.layers.eachLayer((layer) => {
+            setCoordinates(layer.getLatLngs()[0]);
+        });
     };
     const handleDelete = (e) => {
         setCoordinates([]);
