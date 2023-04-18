@@ -2,12 +2,16 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .map {
-  height: 520px;
-  width: 1200px;
-  margin: 30px;
+  height: 60vh;
+  width: 100%;
+  max-width: 1000px;
+  margin: 30px auto;
   border: 1px solid gray;
   background-color: rgb(125, 193, 220);
   display: flex;
@@ -19,11 +23,7 @@
 }
 
 .leaflet-container {
-  width: 1200px;
-  height: 520px;
+  width: 100%;
+  height: 100%;
   border-radius: 5px;
-}
-
-.leaflet-control-attribution {
-  font-size: 10px;
 }

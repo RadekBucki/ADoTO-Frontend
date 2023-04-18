@@ -1,3 +1,7 @@
 .navElements {
     list-style: none;
 }
+
+#cordBox {
+    background-color: #adb5bd;
+}
