@@ -59,8 +59,8 @@ const Map = () => {
             </div>
             <div>
                 {coordinates.map((cord, index) => (
-                    <div>
-                        <p key={index}>
+                    <div key={index}>
+                        <p>
                             {cord.lng} x {cord.lat}
                         </p>
                     </div>
