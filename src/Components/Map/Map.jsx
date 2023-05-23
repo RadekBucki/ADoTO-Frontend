@@ -35,19 +35,39 @@ const Map = () => {
             });
     }, []);
 
-    const sendSquare = async() => {
-        console.log(neValues)
-        console.log(swValues)
+    const sendSquare = () => {
         const width = neValues.first - swValues.first;
         const height = neValues.second - swValues.second;
         if (width > height) {
+            const second = Math.abs(neValues.second + width - height);
+            console.log(swValues.second - second);
+            console.log(swValues.first - neValues.first);
             setNeValues({
                 ...neValues,
-                // first: 
-            })
+                second: second,
+            });
         } else {
-            
+            const first = Math.abs(neValues.first - width + height);
+            console.log(swValues.first - first);
+            setNeValues({
+                ...neValues,
+                first: first,
+            });
         }
+        axios
+            .get(
+                `http://localhost:8080/geoportal/satellite/epsg2180?width=1000&minx=${Math.round(
+                    neValues.first
+                )}&miny=${Math.round(neValues.second)}&maxx=${Math.round(swValues.first)}&maxy=${Math.round(
+                    swValues.second
+                )}`
+            )
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     const handleCreate = async (e) => {
@@ -114,6 +134,13 @@ const Map = () => {
                 <div className="col-lg-3">
                     <Sidebar coordinates={coordinates} />
                     <Button onClick={sendSquare}>GET DATA</Button>
+                    <Button
+                        onClick={() => {
+                            console.log(neValues, swValues);
+                        }}
+                    >
+                        XDDD
+                    </Button>
                 </div>
             </div>
         </div>
