@@ -16,6 +16,26 @@ const Map = () => {
     const [neValues, setNeValues] = useState([]);
     const position = [51.76, 19.46];
 
+    const handleSetNe = () => {
+        const obj = {
+            first: Math.round(neValues.first),
+            second: Math.round(neValues.second),
+        };
+        setNeValues({
+            ...obj,
+        });
+    };
+
+    const handleSetSw = () => {
+        const obj = {
+            first: Math.round(swValues.first),
+            second: Math.round(swValues.second),
+        };
+        setSwValues({
+            ...obj,
+        });
+    };
+
     const sendEPSG2180 = useCallback(async (coordinates) => {
         axios
             .get(`http://localhost:8080/convert/to/epsg2180?x=${coordinates[0]}&y=${coordinates[1]}`)
@@ -36,6 +56,8 @@ const Map = () => {
     }, []);
 
     const sendSquare = () => {
+        handleSetNe();
+        handleSetSw();
         const width = neValues.first - swValues.first;
         const height = neValues.second - swValues.second;
         if (width > height) {
@@ -56,11 +78,7 @@ const Map = () => {
         }
         axios
             .get(
-                `http://localhost:8080/geoportal/satellite/epsg2180?width=1000&minx=${Math.round(
-                    neValues.first
-                )}&miny=${Math.round(neValues.second)}&maxx=${Math.round(swValues.first)}&maxy=${Math.round(
-                    swValues.second
-                )}`
+                `http://localhost:8080/geoportal/satellite/epsg2180?width=1000&minx=${neValues.first}&miny=${neValues.second}&maxx=${swValues.first}&maxy=${swValues.second}`
             )
             .then((response) => {
                 console.log(response);
@@ -134,13 +152,6 @@ const Map = () => {
                 <div className="col-lg-3">
                     <Sidebar coordinates={coordinates} />
                     <Button onClick={sendSquare}>GET DATA</Button>
-                    <Button
-                        onClick={() => {
-                            console.log(neValues, swValues);
-                        }}
-                    >
-                        XDDD
-                    </Button>
                 </div>
             </div>
         </div>
