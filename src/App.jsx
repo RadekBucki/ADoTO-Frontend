@@ -8,7 +8,9 @@ const App = () => {
         <h1>ADoTo Map</h1>
         <a href={`/`} >Go back to landing page</a>
       </header>
-      <Map/>
+      <div className="container-fluid">
+        <Map />
+      </div>
     </div>
   );
 };
