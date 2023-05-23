@@ -1,11 +1,12 @@
 import { MapContainer, TileLayer, FeatureGroup } from "react-leaflet";
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import { EditControl } from "react-leaflet-draw";
 import "leaflet/dist/leaflet.css";
 import "./Map.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 import Sidebar from "../Sidebar/Sidebar";
 import axios from "axios";
+import { Button } from "react-bootstrap";
 window.type = true;
 
 const Map = () => {
@@ -15,59 +16,59 @@ const Map = () => {
     const [neValues, setNeValues] = useState([]);
     const position = [51.76, 19.46];
 
+    const sendEPSG2180 = useCallback(async (coordinates) => {
+        axios
+            .get(`http://localhost:8080/convert/to/epsg2180?x=${coordinates[0]}&y=${coordinates[1]}`)
+            .then((response) => {
+                setNeValues(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        axios
+            .get(`http://localhost:8080/convert/to/epsg2180?x=${coordinates[2]}&y=${coordinates[3]}`)
+            .then((response) => {
+                setSwValues(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
+    const sendSquare = async() => {
+        console.log(neValues)
+        console.log(swValues)
+        const width = neValues.first - swValues.first;
+        const height = neValues.second - swValues.second;
+        if (width > height) {
+            setNeValues({
+                ...neValues,
+                // first: 
+            })
+        } else {
+            
+        }
+    };
+
     const handleCreate = async (e) => {
         if (drawnItemsRef.current) {
             drawnItemsRef.current.clearLayers();
-            const bounds = e.layer.getBounds();
-            const ne = bounds.getNorthEast();
-            const sw = bounds.getSouthWest();
-            await axios
-                .get(`http://localhost:8080/convert/to/epsg2180?x=${+sw.lat}&y=${+sw.lng}`)
-                .then((response) => {
-                    console.log(response);
-                    setSwValues(response.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            const circle = e.layer;
+            const radius = circle.getRadius();
+            const center = circle.getLatLng();
 
-            await axios
-                .get(`http://localhost:8080/convert/to/epsg2180?x=${+ne.lat}&y=${+ne.lng}`)
-                .then((response) => {
-                    console.log(response);
-                    setNeValues(response.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-
-            let array = [...neValues];
-            array[1] = neValues.first + Math.abs(swValues.first - swValues.second);
-            setNeValues(array);
-
-            await axios
-                .get(`http://localhost:8080/convert/to/crs84?x=${+swValues.first}&y=${+swValues.second}`)
-                .then((response) => {
-                    console.log(response);
-                    setSwValues(response.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-
-            await axios
-                .get(`http://localhost:8080/convert/to/crs84?x=${+neValues.first}&y=${+neValues.second}`)
-                .then((response) => {
-                    console.log(response);
-                    setNeValues(response.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-            let squareBounds;
-            squareBounds = L.rectangle([swValues.first, neValues.first], [swValues.second, neValues.second]);
-            drawnItemsRef.current.addLayer(squareBounds);
-            setCoordinates(squareBounds.getLatLngs()[0]);
+            const squareBounds = L.latLngBounds(
+                center.toBounds(radius * Math.sqrt(2)).getNorthWest(),
+                center.toBounds(radius * Math.sqrt(2)).getSouthEast()
+            );
+            const square = L.rectangle(squareBounds);
+            drawnItemsRef.current.addLayer(square);
+            await sendEPSG2180([
+                squareBounds.getNorthEast().lat,
+                squareBounds.getNorthEast().lng,
+                squareBounds.getSouthWest().lat,
+                squareBounds.getSouthWest().lng,
+            ]);
         }
     };
     const handleEdit = (e) => {
@@ -95,7 +96,8 @@ const Map = () => {
                                         draw={{
                                             polygon: false,
                                             polyline: false,
-                                            circle: false,
+                                            circle: true,
+                                            rectangle: false,
                                             circlemarker: false,
                                             marker: false,
                                         }}
@@ -111,6 +113,7 @@ const Map = () => {
                 </div>
                 <div className="col-lg-3">
                     <Sidebar coordinates={coordinates} />
+                    <Button onClick={sendSquare}>GET DATA</Button>
                 </div>
             </div>
         </div>
