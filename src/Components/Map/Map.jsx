@@ -5,19 +5,70 @@ import "leaflet/dist/leaflet.css";
 import "./Map.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 import Sidebar from "../Sidebar/Sidebar";
+import axios from "axios";
 window.type = true;
 
 const Map = () => {
     const drawnItemsRef = useRef(null);
-    let [coordinates, setCoordinates] = useState([]);
+    const [coordinates, setCoordinates] = useState([]);
+    const [swValues, setSwValues] = useState([]);
+    const [neValues, setNeValues] = useState([]);
     const position = [51.76, 19.46];
 
-    const handleCreate = (e) => {
+    const handleCreate = async (e) => {
         if (drawnItemsRef.current) {
             drawnItemsRef.current.clearLayers();
-            drawnItemsRef.current.addLayer(e.layer);
+            const bounds = e.layer.getBounds();
+            const ne = bounds.getNorthEast();
+            const sw = bounds.getSouthWest();
+            await axios
+                .get(`http://localhost:8080/convert/to/epsg2180?x=${+sw.lat}&y=${+sw.lng}`)
+                .then((response) => {
+                    console.log(response);
+                    setSwValues(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+            await axios
+                .get(`http://localhost:8080/convert/to/epsg2180?x=${+ne.lat}&y=${+ne.lng}`)
+                .then((response) => {
+                    console.log(response);
+                    setNeValues(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+            let array = [...neValues];
+            array[1] = neValues.first + Math.abs(swValues.first - swValues.second);
+            setNeValues(array);
+
+            await axios
+                .get(`http://localhost:8080/convert/to/crs84?x=${+swValues.first}&y=${+swValues.second}`)
+                .then((response) => {
+                    console.log(response);
+                    setSwValues(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+            await axios
+                .get(`http://localhost:8080/convert/to/crs84?x=${+neValues.first}&y=${+neValues.second}`)
+                .then((response) => {
+                    console.log(response);
+                    setNeValues(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            let squareBounds;
+            squareBounds = L.rectangle([swValues.first, neValues.first], [swValues.second, neValues.second]);
+            drawnItemsRef.current.addLayer(squareBounds);
+            setCoordinates(squareBounds.getLatLngs()[0]);
         }
-        setCoordinates(e.layer.getLatLngs()[0]);
     };
     const handleEdit = (e) => {
         e.layers.eachLayer((layer) => {
@@ -67,3 +118,4 @@ const Map = () => {
 };
 
 export default Map;
+
