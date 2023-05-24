@@ -61,9 +61,6 @@ const Map = () => {
         const width = neValues.first - swValues.first;
         const height = neValues.second - swValues.second;
         const second = neValues.first + (swValues.first - swValues.last);
-        // const second = Math.abs(neValues.second + width - height);
-        // console.log(swValues.second - second);
-        // console.log(swValues.first - neValues.first);
         setNeValues({
             ...neValues,
             second: second,
@@ -71,9 +68,9 @@ const Map = () => {
         axios
             .get(
                 `http://localhost:8080/geoportal/satellite/epsg2180?width=1000&minx=${Math.round(
-                    neValues.first
-                )}&miny=${Math.round(swValues.first)}&maxx=${Math.round(neValues.second)}&maxy=${Math.round(
-                    swValues.second
+                    swValues.first
+                )}&miny=${Math.round(swValues.second)}&maxx=${Math.round(neValues.first)}&maxy=${Math.round(
+                    neValues.second
                 )}`
             )
             .then((response) => {
