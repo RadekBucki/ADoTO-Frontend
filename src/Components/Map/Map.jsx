@@ -65,6 +65,7 @@ const Map = () => {
             ...neValues,
             second: second,
         });
+        setCoordinates([swValues.first, swValues.second, neValues.first, neValues.second])
         axios
             .get(
                 `http://localhost:8080/geoportal/satellite/epsg2180?width=1000&minx=${Math.round(
@@ -144,7 +145,9 @@ const Map = () => {
                 </div>
                 <div className="col-lg-3">
                     <Sidebar coordinates={coordinates} />
-                    <Button onClick={sendSquare}>GET DATA</Button>
+                    <div className="col-lg-12">
+                        <Button id="getDataButton" className="col-12 mt-4" onClick={sendSquare}>GET DATA</Button>
+                    </div>
                 </div>
             </div>
         </div>

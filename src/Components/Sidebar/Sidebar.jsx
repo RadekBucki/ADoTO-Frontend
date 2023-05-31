@@ -5,6 +5,7 @@ const Sidebar = (props) => {
     const [activeTab, setActiveTab] = useState("coordinates");
     const [showCoordinates, setShowCoordinates] = useState(false);
     const { coordinates } = props;
+    const points = ["SE Lat", "SE Lng", "NW Lat", "NW Lng"]
 
     const handleTabClick = (tabName) => {
         setActiveTab(tabName);
@@ -31,16 +32,13 @@ const Sidebar = (props) => {
                                             {coordinates.map((cord, index) => (
                                                 <div key={index}>
                                                     <div className="row">
-                                                        <div className="col-2 d-flex align-items-center justify-content-center">
-                                                            <div className="fw-semibold ">{index + 1}</div>
+                                                        <div className="col-5 d-flex align-items-center justify-content-center">
+                                                            <div className="fw-semibold ">{points[index]}</div>
                                                         </div>
-                                                        <div className="col-10 d-flex align-items-center justify-content-center">
+                                                        <div className="col-7 d-flex align-items-center justify-content-center">
                                                             <div className="text-light rounded px-1 m-1" id="cordBox">
                                                                 <p>
-                                                                    longtitude: {cord.lng}
-                                                                </p>
-                                                                <p>
-                                                                    latitude: {cord.lat}
+                                                                    {cord}
                                                                 </p>
                                                             </div>
                                                         </div>

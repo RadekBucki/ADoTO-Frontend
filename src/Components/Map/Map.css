@@ -27,3 +27,8 @@
   height: 100%;
   border-radius: 5px;
 }
+
+#getDataButton {
+  background-color: #94bfe3;
+  border-color: #94bfe3;
+}
