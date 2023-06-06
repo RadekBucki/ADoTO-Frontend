@@ -1,10 +1,10 @@
-img {
+.image {
     width: 450px;
     height: 300px;
     opacity: 35%;
 }
 
-.Landing {
+.landing {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,8 +14,8 @@ img {
     position: relative;
     display: inline-flex;
 }
-  
-  .icon-tag {
+
+.icon-tag {
     position: absolute;
     position: absolute;
     top: 35%;
