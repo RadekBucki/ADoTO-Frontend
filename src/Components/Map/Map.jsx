@@ -75,6 +75,15 @@ const Map = () => {
             )
             .then((response) => {
                 console.log(response);
+                console.log(response.data);
+                const data = response.data;
+
+                if (response.status === 200 && data && data.base64) {
+                    const imageUrl = `data:image/png;base64,${data.base64}`;
+                    displayImage(imageUrl);
+                } else {
+                    console.error('Base64 image data not found in response');
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -109,6 +118,12 @@ const Map = () => {
     };
     const handleDelete = (e) => {
         setCoordinates([]);
+    };
+
+    const displayImage = imageUrl => {
+        const img = new Image();
+        img.src = imageUrl;
+        document.getElementById('imageContainer').appendChild(img);
     };
 
     return (
@@ -146,6 +161,9 @@ const Map = () => {
                     <Sidebar coordinates={coordinates} />
                     <Button onClick={sendSquare}>GET DATA</Button>
                 </div>
+            </div>
+            <div id="imageContainer">
+                {/* <button onClick={displayImage}>Fetch and display image</button> */}
             </div>
         </div>
     );
