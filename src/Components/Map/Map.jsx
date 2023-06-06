@@ -45,17 +45,11 @@ const Map = () => {
             .then((response) => {
                 setNeValues(response.data);
             })
-            .catch((error) => {
-                console.log(error);
-            });
         axios
             .get(`${config.url}/convert/to/epsg2180?x=${coordinates[2]}&y=${coordinates[3]}`)
             .then((response) => {
                 setSwValues(response.data);
             })
-            .catch((error) => {
-                console.log(error);
-            });
     }, []);
 
     const sendSquare = () => {
@@ -77,20 +71,13 @@ const Map = () => {
                 )}`
             )
             .then((response) => {
-                console.log(response);
-                console.log(response.data);
                 const data = response.data;
 
                 if (response.status === 200 && data && data.base64) {
                     const imageUrl = `data:image/png;base64,${data.base64}`;
                     displayImage(imageUrl);
-                } else {
-                    console.error('Base64 image data not found in response');
                 }
             })
-            .catch((error) => {
-                console.log(error);
-            });
     };
 
     const handleCreate = async (e) => {
@@ -164,9 +151,6 @@ const Map = () => {
                     <Sidebar coordinates={coordinates} />
                     <Button onClick={sendSquare}>GET DATA</Button>
                 </div>
-            </div>
-            <div id="imageContainer">
-                {/* <button onClick={displayImage}>Fetch and display image</button> */}
             </div>
         </div>
     );
