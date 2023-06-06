@@ -113,7 +113,10 @@ const Map = () => {
     const displayImage = (imageUrl) => {
         const img = new Image();
         img.src = imageUrl;
-        document.getElementById("imageContainer").appendChild(img);
+        img.onload = function(){
+            let canvasCtx = document.getElementById("imageCanvas").getContext("2d")
+            canvasCtx.drawImage(img, 0, 0);
+        }
     };
     const testSvgObj = () => {
         axios
@@ -126,6 +129,18 @@ const Map = () => {
             )
             .then((response) => {
                 console.log(response);
+
+                let canvasCtx = document.getElementById("imageCanvas").getContext("2d")
+
+                response.data.forEach((object) => {
+                    canvasCtx.moveTo(object[0].x, object[0].y);
+                    canvasCtx.lineWidth = 5;
+                    canvasCtx.strokeStyle = '#ff0000';
+                    canvasCtx.stroke();
+                    object.forEach((point) => {
+                        canvasCtx.lineTo(point.x, point.y);
+                    });
+                });
             })
             .catch((error) => {
                 console.log(error);
@@ -169,6 +184,7 @@ const Map = () => {
                 </div>
             </div>
             <div id="imageContainer"></div>
+            <canvas id="imageCanvas" width="1000" height="1000" />
         </div>
     );
 };
