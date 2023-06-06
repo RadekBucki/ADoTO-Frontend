@@ -11,8 +11,12 @@ window.type = true;
 
 const Map = () => {
     const config = {
-        url: import.meta.env.VITE_BASE_URL
-    }
+        url: import.meta.env.VITE_BASE_URL,
+        bud: import.meta.env.VITE_BUD,
+        river: import.meta.env.VITE_RIVER,
+        forest: import.meta.env.VITE_FOREST,
+        road: import.meta.env.VITE_ROAD,
+    };
     const drawnItemsRef = useRef(null);
     const [coordinates, setCoordinates] = useState([]);
     const [swValues, setSwValues] = useState([]);
@@ -40,16 +44,12 @@ const Map = () => {
     };
 
     const sendEPSG2180 = useCallback(async (coordinates) => {
-        axios
-            .get(`${config.url}/convert/to/epsg2180?x=${coordinates[0]}&y=${coordinates[1]}`)
-            .then((response) => {
-                setNeValues(response.data);
-            })
-        axios
-            .get(`${config.url}/convert/to/epsg2180?x=${coordinates[2]}&y=${coordinates[3]}`)
-            .then((response) => {
-                setSwValues(response.data);
-            })
+        axios.get(`${config.url}/convert/to/epsg2180?x=${coordinates[0]}&y=${coordinates[1]}`).then((response) => {
+            setNeValues(response.data);
+        });
+        axios.get(`${config.url}/convert/to/epsg2180?x=${coordinates[2]}&y=${coordinates[3]}`).then((response) => {
+            setSwValues(response.data);
+        });
     }, []);
 
     const sendSquare = () => {
@@ -77,7 +77,7 @@ const Map = () => {
                     const imageUrl = `data:image/png;base64,${data.base64}`;
                     displayImage(imageUrl);
                 }
-            })
+            });
     };
 
     const handleCreate = async (e) => {
@@ -110,12 +110,27 @@ const Map = () => {
         setCoordinates([]);
     };
 
-    const displayImage = imageUrl => {
+    const displayImage = (imageUrl) => {
         const img = new Image();
         img.src = imageUrl;
-        document.getElementById('imageContainer').appendChild(img);
+        document.getElementById("imageContainer").appendChild(img);
     };
-
+    const testSvgObj = () => {
+        axios
+            .get(
+                `${config.url}/geoportal/svgObjects?height=1000&width=1000&minx=${Math.round(
+                    swValues.first
+                )}&miny=${Math.round(swValues.second)}&maxx=${Math.round(neValues.first)}&maxy=${Math.round(
+                    neValues.second
+                )}&layer=${config.bud}`
+            )
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
     return (
         <div className="container-fluid">
             <div className="row">
@@ -150,10 +165,10 @@ const Map = () => {
                 <div className="col-lg-3">
                     <Sidebar coordinates={coordinates} />
                     <Button onClick={sendSquare}>GET DATA</Button>
+                    <Button onClick={testSvgObj}>Test svg objects</Button>
                 </div>
             </div>
-            <div id="imageContainer">
-            </div>
+            <div id="imageContainer"></div>
         </div>
     );
 };
