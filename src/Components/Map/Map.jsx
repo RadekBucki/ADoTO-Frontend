@@ -153,7 +153,6 @@ const Map = () => {
                 </div>
             </div>
             <div id="imageContainer">
-                {/* <button onClick={displayImage}>Fetch and display image</button> */}
             </div>
         </div>
     );
