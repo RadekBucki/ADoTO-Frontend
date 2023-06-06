@@ -10,6 +10,9 @@ import { Button } from "react-bootstrap";
 window.type = true;
 
 const Map = () => {
+    const config = {
+        url: import.meta.env.BASE_URL
+    }
     const drawnItemsRef = useRef(null);
     const [coordinates, setCoordinates] = useState([]);
     const [swValues, setSwValues] = useState([]);
@@ -38,7 +41,7 @@ const Map = () => {
 
     const sendEPSG2180 = useCallback(async (coordinates) => {
         axios
-            .get(`http://localhost:8080/convert/to/epsg2180?x=${coordinates[0]}&y=${coordinates[1]}`)
+            .get(`${config.url}/convert/to/epsg2180?x=${coordinates[0]}&y=${coordinates[1]}`)
             .then((response) => {
                 setNeValues(response.data);
             })
@@ -46,7 +49,7 @@ const Map = () => {
                 console.log(error);
             });
         axios
-            .get(`http://localhost:8080/convert/to/epsg2180?x=${coordinates[2]}&y=${coordinates[3]}`)
+            .get(`${config.url}/convert/to/epsg2180?x=${coordinates[2]}&y=${coordinates[3]}`)
             .then((response) => {
                 setSwValues(response.data);
             })
@@ -65,9 +68,11 @@ const Map = () => {
             ...neValues,
             second: second,
         });
+        console.log("xd")
+        console.log(import.meta.env.BASE_URL)
         axios
             .get(
-                `http://localhost:8080/geoportal/satellite/epsg2180?width=1000&minx=${Math.round(
+                `${config.url}/geoportal/satellite/epsg2180?width=1000&minx=${Math.round(
                     swValues.first
                 )}&miny=${Math.round(swValues.second)}&maxx=${Math.round(neValues.first)}&maxy=${Math.round(
                     neValues.second
