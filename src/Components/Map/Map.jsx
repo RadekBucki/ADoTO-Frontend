@@ -152,6 +152,9 @@ const Map = () => {
                     <Button onClick={sendSquare}>GET DATA</Button>
                 </div>
             </div>
+            <div id="imageContainer">
+                {/* <button onClick={displayImage}>Fetch and display image</button> */}
+            </div>
         </div>
     );
 };
