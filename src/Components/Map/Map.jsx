@@ -25,8 +25,8 @@ const Map = () => {
 
     const handleSetNe = () => {
         const obj = {
-            first: Math.round(neValues.first),
-            second: Math.round(neValues.second),
+            first: neValues.first,
+            second: neValues.second,
         };
         setNeValues({
             ...obj,
@@ -35,8 +35,8 @@ const Map = () => {
 
     const handleSetSw = () => {
         const obj = {
-            first: Math.round(swValues.first),
-            second: Math.round(swValues.second),
+            first: swValues.first,
+            second: swValues.second,
         };
         setSwValues({
             ...obj,
@@ -57,18 +57,18 @@ const Map = () => {
         handleSetSw();
         const width = neValues.first - swValues.first;
         const height = neValues.second - swValues.second;
-        const second = neValues.first + (swValues.first - swValues.last);
+        const second = neValues.first + (swValues.second - swValues.first);
         setNeValues({
             ...neValues,
             second: second,
         });
         axios
             .get(
-                `${config.url}/geoportal/satellite/epsg2180?width=1000&minx=${Math.round(
+                `${config.url}/geoportal/satellite/epsg2180?width=1000&minx=${
                     swValues.first
-                )}&miny=${Math.round(swValues.second)}&maxx=${Math.round(neValues.first)}&maxy=${Math.round(
+                }&miny=${swValues.second}&maxx=${neValues.first}&maxy=${
                     neValues.second
-                )}`
+                }`
             )
             .then((response) => {
                 const data = response.data;
@@ -118,11 +118,11 @@ const Map = () => {
     const testSvgObj = () => {
         axios
             .get(
-                `${config.url}/geoportal/svgObjects?height=1000&width=1000&minx=${Math.round(
+                `${config.url}/geoportal/svgObjects?height=1000&width=1000&minx=${
                     swValues.first
-                )}&miny=${Math.round(swValues.second)}&maxx=${Math.round(neValues.first)}&maxy=${Math.round(
+                }&miny=${swValues.second}&maxx=${neValues.first}&maxy=${
                     neValues.second
-                )}&layer=${config.bud}`
+                }&layer=${config.bud}`
             )
             .then((response) => {
                 console.log(response);
