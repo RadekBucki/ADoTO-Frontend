@@ -11,7 +11,7 @@ window.type = true;
 
 const Map = () => {
     const config = {
-        url: import.meta.env.BASE_URL
+        url: import.meta.env.VITE_BASE_URL
     }
     const drawnItemsRef = useRef(null);
     const [coordinates, setCoordinates] = useState([]);
@@ -68,8 +68,6 @@ const Map = () => {
             ...neValues,
             second: second,
         });
-        console.log("xd")
-        console.log(import.meta.env.BASE_URL)
         axios
             .get(
                 `${config.url}/geoportal/satellite/epsg2180?width=1000&minx=${Math.round(
