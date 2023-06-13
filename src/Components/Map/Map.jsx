@@ -21,6 +21,7 @@ const Map = () => {
     const [coordinates, setCoordinates] = useState([]);
     const [swValues, setSwValues] = useState([]);
     const [neValues, setNeValues] = useState([]);
+    const [image, setImage] = useState(null);
     const position = [51.76, 19.46];
 
     const handleSetNe = () => {
@@ -74,6 +75,7 @@ const Map = () => {
                 const data = response.data;
 
                 if (response.status === 200 && data && data.base64) {
+                    setImage(data.base64);
                     const imageUrl = `data:image/png;base64,${data.base64}`;
                     displayImage(imageUrl);
                 }
@@ -118,14 +120,14 @@ const Map = () => {
             canvasCtx.drawImage(img, 0, 0);
         }
     };
-    const testSvgObj = () => {
+    const testSvgObj = (layer) => {
         axios
             .get(
                 `${config.url}/geoportal/svgObjects?height=1000&width=1000&minx=${
                     swValues.first
                 }&miny=${swValues.second}&maxx=${neValues.first}&maxy=${
                     neValues.second
-                }&layer=${config.bud}`
+                }&layer=${layer}`
             )
             .then((response) => {
                 console.log(response);
@@ -134,7 +136,7 @@ const Map = () => {
 
                 response.data.forEach((object) => {
                     canvasCtx.moveTo(object[0].x, object[0].y);
-                    canvasCtx.lineWidth = 5;
+                    canvasCtx.lineWidth = 2;
                     canvasCtx.strokeStyle = '#ff0000';
                     canvasCtx.stroke();
                     object.forEach((point) => {
@@ -145,6 +147,44 @@ const Map = () => {
             .catch((error) => {
                 console.log(error);
             });
+    };
+    const testAiObj = (layer) => {
+        axios
+                .post(
+                        `${config.url}/ai/svgObjects`,
+                        {
+                            width: 1000,
+                            layer: layer,
+                            base64Image: image,
+                            minx: swValues.first,
+                            miny: swValues.second,
+                            maxx: neValues.first,
+                            maxy: neValues.second,
+                        },
+                        {
+                            headers: {
+                                'content-type': 'application/json'
+                            }
+                        }
+                )
+                .then((response) => {
+                    console.log(response);
+
+                    let canvasCtx = document.getElementById("imageCanvasAi").getContext("2d")
+
+                    response.data.forEach((object) => {
+                        canvasCtx.moveTo(object[0].x, object[0].y);
+                        canvasCtx.lineWidth = 2;
+                        canvasCtx.strokeStyle = '#00ff00';
+                        canvasCtx.stroke();
+                        object.forEach((point) => {
+                            canvasCtx.lineTo(point.x, point.y);
+                        });
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
     };
     return (
         <div className="container-fluid">
@@ -180,11 +220,19 @@ const Map = () => {
                 <div className="col-lg-3">
                     <Sidebar coordinates={coordinates} />
                     <Button onClick={sendSquare}>GET DATA</Button>
-                    <Button onClick={testSvgObj}>Test svg objects</Button>
+                    <Button onClick={() => testSvgObj(config.bud)}>Test svg objects BUILDING</Button>
+                    <Button onClick={() => testAiObj(config.bud)}>Test ai objects BUILDING</Button>
+                    <Button onClick={() => testSvgObj(config.road)}>Test svg objects ROAD</Button>
+                    <Button onClick={() => testAiObj(config.road)}>Test ai objects ROAD</Button>
+                    <Button onClick={() => testSvgObj(config.forest)}>Test svg objects FOREST</Button>
+                    <Button onClick={() => testAiObj(config.forest)}>Test ai objects FOREST</Button>
+                    <Button onClick={() => testSvgObj(config.river)}>Test svg objects WATER</Button>
+                    <Button onClick={() => testAiObj(config.river)}>Test ai objects WATER</Button>
                 </div>
             </div>
             <div id="imageContainer"></div>
             <canvas id="imageCanvas" width="1000" height="1000" />
+            <canvas id="imageCanvasAi" width="1000" height="1000" />
         </div>
     );
 };
