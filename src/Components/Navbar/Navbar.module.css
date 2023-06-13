@@ -1,0 +1,35 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+  }
+  
+  .navbar_brand {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  .navbar_items {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar_label {
+    margin-right: 20px;
+    color: #ffffff;
+  }
+  
+  .navbar_button {
+    background-color: #51D0E6;
+    color: #000000;
+    border: none;
+    cursor: pointer;
+  }
+  
