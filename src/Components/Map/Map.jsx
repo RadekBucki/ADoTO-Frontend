@@ -11,8 +11,12 @@ window.type = true;
 
 const Map = () => {
     const config = {
-        url: import.meta.env.VITE_BASE_URL
-    }
+        url: import.meta.env.VITE_BASE_URL,
+        bud: import.meta.env.VITE_BUD,
+        river: import.meta.env.VITE_RIVER,
+        forest: import.meta.env.VITE_FOREST,
+        road: import.meta.env.VITE_ROAD,
+    };
     const drawnItemsRef = useRef(null);
     const [coordinates, setCoordinates] = useState([]);
     const [swValues, setSwValues] = useState([]);
@@ -21,8 +25,8 @@ const Map = () => {
 
     const handleSetNe = () => {
         const obj = {
-            first: Math.round(neValues.first),
-            second: Math.round(neValues.second),
+            first: neValues.first,
+            second: neValues.second,
         };
         setNeValues({
             ...obj,
@@ -31,8 +35,8 @@ const Map = () => {
 
     const handleSetSw = () => {
         const obj = {
-            first: Math.round(swValues.first),
-            second: Math.round(swValues.second),
+            first: swValues.first,
+            second: swValues.second,
         };
         setSwValues({
             ...obj,
@@ -40,16 +44,12 @@ const Map = () => {
     };
 
     const sendEPSG2180 = useCallback(async (coordinates) => {
-        axios
-            .get(`${config.url}/convert/to/epsg2180?x=${coordinates[0]}&y=${coordinates[1]}`)
-            .then((response) => {
-                setNeValues(response.data);
-            })
-        axios
-            .get(`${config.url}/convert/to/epsg2180?x=${coordinates[2]}&y=${coordinates[3]}`)
-            .then((response) => {
-                setSwValues(response.data);
-            })
+        axios.get(`${config.url}/convert/to/epsg2180?x=${coordinates[0]}&y=${coordinates[1]}`).then((response) => {
+            setNeValues(response.data);
+        });
+        axios.get(`${config.url}/convert/to/epsg2180?x=${coordinates[2]}&y=${coordinates[3]}`).then((response) => {
+            setSwValues(response.data);
+        });
     }, []);
 
     const sendSquare = () => {
@@ -57,18 +57,18 @@ const Map = () => {
         handleSetSw();
         const width = neValues.first - swValues.first;
         const height = neValues.second - swValues.second;
-        const second = neValues.first + (swValues.first - swValues.last);
+        const second = neValues.first + (swValues.second - swValues.first);
         setNeValues({
             ...neValues,
             second: second,
         });
         axios
             .get(
-                `${config.url}/geoportal/satellite/epsg2180?width=1000&minx=${Math.round(
+                `${config.url}/geoportal/satellite/epsg2180?width=1000&minx=${
                     swValues.first
-                )}&miny=${Math.round(swValues.second)}&maxx=${Math.round(neValues.first)}&maxy=${Math.round(
+                }&miny=${swValues.second}&maxx=${neValues.first}&maxy=${
                     neValues.second
-                )}`
+                }`
             )
             .then((response) => {
                 const data = response.data;
@@ -77,7 +77,7 @@ const Map = () => {
                     const imageUrl = `data:image/png;base64,${data.base64}`;
                     displayImage(imageUrl);
                 }
-            })
+            });
     };
 
     const handleCreate = async (e) => {
@@ -110,12 +110,42 @@ const Map = () => {
         setCoordinates([]);
     };
 
-    const displayImage = imageUrl => {
+    const displayImage = (imageUrl) => {
         const img = new Image();
         img.src = imageUrl;
-        document.getElementById('imageContainer').appendChild(img);
+        img.onload = function(){
+            let canvasCtx = document.getElementById("imageCanvas").getContext("2d")
+            canvasCtx.drawImage(img, 0, 0);
+        }
     };
+    const testSvgObj = () => {
+        axios
+            .get(
+                `${config.url}/geoportal/svgObjects?height=1000&width=1000&minx=${
+                    swValues.first
+                }&miny=${swValues.second}&maxx=${neValues.first}&maxy=${
+                    neValues.second
+                }&layer=${config.bud}`
+            )
+            .then((response) => {
+                console.log(response);
 
+                let canvasCtx = document.getElementById("imageCanvas").getContext("2d")
+
+                response.data.forEach((object) => {
+                    canvasCtx.moveTo(object[0].x, object[0].y);
+                    canvasCtx.lineWidth = 5;
+                    canvasCtx.strokeStyle = '#ff0000';
+                    canvasCtx.stroke();
+                    object.forEach((point) => {
+                        canvasCtx.lineTo(point.x, point.y);
+                    });
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
     return (
         <div className="container-fluid">
             <div className="row">
@@ -150,10 +180,11 @@ const Map = () => {
                 <div className="col-lg-3">
                     <Sidebar coordinates={coordinates} />
                     <Button onClick={sendSquare}>GET DATA</Button>
+                    <Button onClick={testSvgObj}>Test svg objects</Button>
                 </div>
             </div>
-            <div id="imageContainer">
-            </div>
+            <div id="imageContainer"></div>
+            <canvas id="imageCanvas" width="1000" height="1000" />
         </div>
     );
 };
