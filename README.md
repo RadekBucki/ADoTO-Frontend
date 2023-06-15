@@ -1,14 +1,24 @@
 # ADoTO-Frontend
 Automatic Detection of Topographic Objects
-### Install dependencies
+
+## This repository is part of ADoTO project:
+
+| Responsibility | Link                                               |
+|----------------|----------------------------------------------------|
+| Architecture   | https://github.com/RadekBucki/ADoTO-Architecture   |
+| Backend        | https://github.com/RadekBucki/ADoTO-Backend        |
+| AI             | https://github.com/RadekBucki/ADoTO-AI             |
+| Frontend       | https://github.com/RadekBucki/ADoTO-Frontend       |
+
+## Install dependencies
 ```
 npm i
 ```
-### Start a local web server by running
+## Start a local web server by running
 ```
 npm start
 ```
-#### Available Scripts
+### Available Scripts
 
 In this project, you can run the following scripts:
 
