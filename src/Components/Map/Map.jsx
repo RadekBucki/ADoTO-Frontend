@@ -7,6 +7,7 @@ import "leaflet-draw/dist/leaflet.draw.css";
 import Sidebar from "../Sidebar/Sidebar";
 import axios from "axios";
 import { Button } from "react-bootstrap";
+import Select from "react-select";
 window.type = true;
 
 const Map = () => {
@@ -17,10 +18,17 @@ const Map = () => {
         forest: import.meta.env.VITE_FOREST,
         road: import.meta.env.VITE_ROAD,
     };
+    const optionList = [
+        { value: config.bud, label: "Buildings" },
+        { value: config.river, label: "Rivers" },
+        { value: config.forest, label: "Forest" },
+        { value: config.road, label: "Road" },
+    ];
     const drawnItemsRef = useRef(null);
     const [coordinates, setCoordinates] = useState([]);
     const [swValues, setSwValues] = useState([]);
     const [neValues, setNeValues] = useState([]);
+    const [selectedOptions, setSelectedOptions] = useState();
     const position = [51.76, 19.46];
 
     const handleSetNe = () => {
@@ -41,6 +49,10 @@ const Map = () => {
         setSwValues({
             ...obj,
         });
+    };
+
+    const handleSelect = (data) => {
+        setSelectedOptions(data);
     };
 
     const sendEPSG2180 = useCallback(async (coordinates) => {
@@ -64,11 +76,7 @@ const Map = () => {
         });
         axios
             .get(
-                `${config.url}/geoportal/satellite/epsg2180?width=1000&minx=${
-                    swValues.first
-                }&miny=${swValues.second}&maxx=${neValues.first}&maxy=${
-                    neValues.second
-                }`
+                `${config.url}/geoportal/satellite/epsg2180?width=1000&minx=${swValues.first}&miny=${swValues.second}&maxx=${neValues.first}&maxy=${neValues.second}`
             )
             .then((response) => {
                 const data = response.data;
@@ -113,29 +121,25 @@ const Map = () => {
     const displayImage = (imageUrl) => {
         const img = new Image();
         img.src = imageUrl;
-        img.onload = function(){
-            let canvasCtx = document.getElementById("imageCanvas").getContext("2d")
+        img.onload = function () {
+            let canvasCtx = document.getElementById("imageCanvas").getContext("2d");
             canvasCtx.drawImage(img, 0, 0);
-        }
+        };
     };
     const testSvgObj = () => {
         axios
             .get(
-                `${config.url}/geoportal/svgObjects?height=1000&width=1000&minx=${
-                    swValues.first
-                }&miny=${swValues.second}&maxx=${neValues.first}&maxy=${
-                    neValues.second
-                }&layer=${config.bud}`
+                `${config.url}/geoportal/svgObjects?height=1000&width=1000&minx=${swValues.first}&miny=${swValues.second}&maxx=${neValues.first}&maxy=${neValues.second}&layer=${config.bud}`
             )
             .then((response) => {
                 console.log(response);
 
-                let canvasCtx = document.getElementById("imageCanvas").getContext("2d")
+                let canvasCtx = document.getElementById("imageCanvas").getContext("2d");
 
                 response.data.forEach((object) => {
                     canvasCtx.moveTo(object[0].x, object[0].y);
                     canvasCtx.lineWidth = 5;
-                    canvasCtx.strokeStyle = '#ff0000';
+                    canvasCtx.strokeStyle = "#ff0000";
                     canvasCtx.stroke();
                     object.forEach((point) => {
                         canvasCtx.lineTo(point.x, point.y);
@@ -146,6 +150,46 @@ const Map = () => {
                 console.log(error);
             });
     };
+
+    const testAiObj = (layer) => {
+        axios
+            .post(
+                `${config.url}/ai/svgObjects`,
+                {
+                    width: 1000,
+                    layer: layer,
+                    base64Image: image,
+                    minx: swValues.first,
+                    miny: swValues.second,
+                    maxx: neValues.first,
+                    maxy: neValues.second,
+                },
+                {
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                }
+            )
+            .then((response) => {
+                console.log(response);
+
+                let canvasCtx = document.getElementById("imageCanvasAi").getContext("2d");
+
+                response.data.forEach((object) => {
+                    canvasCtx.moveTo(object[0].x, object[0].y);
+                    canvasCtx.lineWidth = 2;
+                    canvasCtx.strokeStyle = "#00ff00";
+                    canvasCtx.stroke();
+                    object.forEach((point) => {
+                        canvasCtx.lineTo(point.x, point.y);
+                    });
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
     return (
         <div className="container-fluid bg-dark">
             <div className="row">
@@ -182,8 +226,21 @@ const Map = () => {
                 </div>
             </div>
             <div className="row">
-                <Button className="col text-dark" onClick={sendSquare}>GET DATA</Button>
-                <Button className="col text-dark" onClick={testSvgObj}>GET OUTLINES</Button>
+                <Button className="col text-dark" onClick={sendSquare}>
+                    GET DATA
+                </Button>
+                <Select
+                    className="my-4"
+                    options={optionList}
+                    placeholder="Select option"
+                    value={selectedOptions}
+                    onChange={handleSelect}
+                    isSearchable={true}
+                    isMulti
+                />
+                <Button className="col text-dark" onClick={testSvgObj}>
+                    GET OUTLINES
+                </Button>
             </div>
             <div id="imageContainer"></div>
             <canvas id="imageCanvas" width="1000" height="1000" />
