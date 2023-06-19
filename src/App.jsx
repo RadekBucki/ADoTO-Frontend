@@ -5,12 +5,6 @@ const App = () => {
 
   return (
     <div className="App">
-      {/* <header className="App-header mb-5">
-        <h1>ADoTo Map</h1>
-        <a href={`/`} >Go back to landing page</a>
-        <Navbar />
-      </header> */}
-
       <div className="container-fluid">
         <Map />
         <Navbar />
