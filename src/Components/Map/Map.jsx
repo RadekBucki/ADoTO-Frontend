@@ -147,10 +147,10 @@ const Map = () => {
             });
     };
     return (
-        <div className="container-fluid">
+        <div className="container-fluid bg-dark">
             <div className="row">
                 <div className="col-lg-9">
-                    <section className="map-component">
+                    <section className="map-component mt-5">
                         <div className="map">
                             <MapContainer center={position} zoom={6} scrollWheelZoom={true}>
                                 <FeatureGroup ref={drawnItemsRef}>
@@ -179,9 +179,11 @@ const Map = () => {
                 </div>
                 <div className="col-lg-3">
                     <Sidebar coordinates={coordinates} />
-                    <Button onClick={sendSquare}>GET DATA</Button>
-                    <Button onClick={testSvgObj}>Test svg objects</Button>
                 </div>
+            </div>
+            <div className="row">
+                <Button className="col text-dark" onClick={sendSquare}>GET DATA</Button>
+                <Button className="col text-dark" onClick={testSvgObj}>GET OUTLINES</Button>
             </div>
             <div id="imageContainer"></div>
             <canvas id="imageCanvas" width="1000" height="1000" />

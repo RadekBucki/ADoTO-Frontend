@@ -14,7 +14,7 @@ const Sidebar = (props) => {
     };
 
     return (
-        <div className="sidebar mx-2">
+        <div className="sidebar mx-2 my-5">
             <ul className="nav nav-tabs flex-column">
                 <li className="nav-item">
                     <a className={`nav-link ${activeTab === "coordinates" ? "active" : ""}`} onClick={() => handleTabClick("coordinates")}>

@@ -3,5 +3,12 @@
 }
 
 #cordBox {
-    background-color: #94bfe3;
+    background-color: #292b2c;
+    color: #51D0E6;
 }
+
+.nav-link, .card {
+    color: #292b2c !important;
+    background-color: #51D0E6 !important;
+}
+

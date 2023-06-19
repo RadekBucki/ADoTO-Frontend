@@ -6,10 +6,10 @@ function Navbar() {
   return (
     <div className="landing-page">
       <nav className={classes.navbar}>
-        <div className={classes.navbar_brand}>ADoTO</div>
+        <div className={`${classes.navbar_brand} mx-3`}>ADoTO</div>
         <div className={classes.navbar_items}>
-          <span className={classes.navbar_label}>Home</span>
-          <span className={classes.navbar_label}>Issues</span>
+          <Link to="/" className={classes.navbar_label}>Home</Link>
+          <Link to="/issues" className={classes.navbar_label}>Issues</Link>
           <Link to="/map" className={`${classes.navbar_button} btn`}>Go to map</Link>
         </div>
       </nav>

@@ -27,3 +27,12 @@
   height: 100%;
   border-radius: 5px;
 }
+
+.container-fluid {
+  /* background-color: #51D0E6 !important; */
+}
+
+Button {
+  background-color: #51D0E6 !important;
+  border-color: #51D0E6 !important;
+}
