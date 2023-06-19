@@ -227,19 +227,21 @@ const Map = () => {
                     <Sidebar coordinates={coordinates} />
                 </div>
             </div>
-            <div className="row">
+            <div className="control">
                 <Button className="col text-dark" onClick={sendSquare}>
                     GET DATA
                 </Button>
-                <Select
-                    className="my-4"
-                    options={optionList}
-                    placeholder="Select option"
-                    value={selectedOptions}
-                    onChange={handleSelect}
-                    isSearchable={true}
-                    isMulti
-                />
+                <div className="select">
+                    <Select
+                        className="my-4"
+                        options={optionList}
+                        placeholder="Select option"
+                        value={selectedOptions}
+                        onChange={handleSelect}
+                        isSearchable={true}
+                        isMulti
+                    />
+                </div>
                 <Button className="col text-dark" onClick={testAiObj}>
                     GET OUTLINES
                 </Button>

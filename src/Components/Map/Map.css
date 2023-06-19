@@ -35,4 +35,19 @@
 Button {
   background-color: #51D0E6 !important;
   border-color: #51D0E6 !important;
+  font-size: 20px !important;
+  font-weight: bold !important;
+  width: 500px !important;
+}
+
+.select {
+  width: 500px !important;
+}
+
+.control {
+  margin: auto 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
