@@ -11,7 +11,7 @@ const App = () => {
         <Navbar />
       </header> */}
 
-      <div className="container-fluid">
+      <div>
         <Map />
         <Navbar />
       </div>

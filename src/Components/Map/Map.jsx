@@ -29,6 +29,7 @@ const Map = () => {
     const [swValues, setSwValues] = useState([]);
     const [neValues, setNeValues] = useState([]);
     const [selectedOptions, setSelectedOptions] = useState();
+    const [image, setImage] = useState(null);
     const position = [51.76, 19.46];
 
     const handleSetNe = () => {
@@ -82,6 +83,7 @@ const Map = () => {
                 const data = response.data;
 
                 if (response.status === 200 && data && data.base64) {
+                    setImage(data.base64);
                     const imageUrl = `data:image/png;base64,${data.base64}`;
                     displayImage(imageUrl);
                 }
@@ -151,13 +153,13 @@ const Map = () => {
             });
     };
 
-    const testAiObj = (layer) => {
+    const testAiObj = () => {
         axios
             .post(
                 `${config.url}/ai/svgObjects`,
                 {
                     width: 1000,
-                    layer: layer,
+                    layer: config.bud,
                     base64Image: image,
                     minx: swValues.first,
                     miny: swValues.second,
@@ -221,7 +223,7 @@ const Map = () => {
                         </div>
                     </section>
                 </div>
-                <div className="col-lg-3">
+                <div className="col-lg-3 mt-5">
                     <Sidebar coordinates={coordinates} />
                 </div>
             </div>
@@ -238,12 +240,13 @@ const Map = () => {
                     isSearchable={true}
                     isMulti
                 />
-                <Button className="col text-dark" onClick={testSvgObj}>
+                <Button className="col text-dark" onClick={testAiObj}>
                     GET OUTLINES
                 </Button>
             </div>
             <div id="imageContainer"></div>
             <canvas id="imageCanvas" width="1000" height="1000" />
+            <canvas id="imageCanvasAi" width="1000" height="1000" />
         </div>
     );
 };

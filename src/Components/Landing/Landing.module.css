@@ -8,7 +8,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #51D0E6;
+    background-color: #51d0e6;
 }
 
 .block-icon {
@@ -27,28 +27,41 @@
 /* .content_section {
     position: relative;
   } */
-  
-  .welcome_text {
+
+.welcome_text {
     position: absolute;
     top: 50%;
     left: 40%;
     transform: translate(-50%, -50%);
     text-align: center;
-  }
-  
-  .welcome_line {
+}
+
+.welcome_line {
     display: block;
     font-size: 62px;
     font-weight: bold;
     color: #ffffff;
     margin-bottom: 10px;
-  }
+}
 
-  .welcome_line:nth-child(2) {
+.welcome_line:nth-child(2) {
     margin-left: +330px;
-  }
-  
-  .welcome_line:nth-child(3) {
+}
+
+.welcome_line:nth-child(3) {
     margin-left: +550px;
-    color: #51D0E6;
-  }
+    color: #51d0e6;
+}
+
+.header {
+  font-weight: bold;
+  font-size: 40px;
+}
+
+.center {
+  margin: auto 120px;
+}
+
+.paragraph {
+  font-size: 24px;
+}
