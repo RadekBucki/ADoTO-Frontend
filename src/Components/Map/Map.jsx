@@ -199,12 +199,11 @@ const Map = () => {
             testAiObj(selectedOptions[i].value, colors[i]);
             testSvgObj(selectedOptions[i].value, svgColors[i]);
         }
-        console.log(legend);
     };
     const refresh = () => {
-        // let canvasCtx = document.getElementById("imageCanvasAi").getContext("2d");
-        // canvasCtx.clearRect(0, 0, 1000, 1000);
-        console.log(legend);
+        let canvasCtx = document.getElementById("imageCanvasAi").getContext("2d");
+        setLegend([]);
+        canvasCtx.clearRect(0, 0, 1000, 1000);
     };
 
     return (
@@ -266,12 +265,12 @@ const Map = () => {
                         REMOVE
                     </Button>
                 ) : (
-                    ""
+                    <div className="placeholder"></div>
                 )}
-                <div className="text-white">
+                <div className="legend">
                     {legend.map((obj) => (
-                        <div>
-                            <label key={obj.color}>{obj.name}</label>
+                        <div key={obj.color} className="align">
+                            <label>{obj.name}</label>
                             <div className="circle" style={{ background: `${obj.color}` }}></div>
                         </div>
                     ))}
@@ -290,3 +289,4 @@ const Map = () => {
 };
 
 export default Map;
+
