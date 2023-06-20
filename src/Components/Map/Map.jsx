@@ -31,7 +31,7 @@ const Map = () => {
     const [selectedOptions, setSelectedOptions] = useState();
     const [image, setImage] = useState(null);
     const position = [51.76, 19.46];
-
+    const colors = ["red", "green", "blue", "orange"];
     const handleSetNe = () => {
         const obj = {
             first: neValues.first,
@@ -128,38 +128,27 @@ const Map = () => {
             canvasCtx.drawImage(img, 0, 0);
         };
     };
-    const testSvgObj = () => {
+    const testSvgObj = (layer, color) => {
         axios
             .get(
-                `${config.url}/geoportal/svgObjects?height=1000&width=1000&minx=${swValues.first}&miny=${swValues.second}&maxx=${neValues.first}&maxy=${neValues.second}&layer=${config.bud}`
+                `${config.url}/geoportal/svgObjects?height=1000&width=1000&minx=${swValues.first}&miny=${swValues.second}&maxx=${neValues.first}&maxy=${neValues.second}&layer=${layer}`
             )
             .then((response) => {
                 console.log(response);
-
-                let canvasCtx = document.getElementById("imageCanvas").getContext("2d");
-
-                response.data.forEach((object) => {
-                    canvasCtx.moveTo(object[0].x, object[0].y);
-                    canvasCtx.lineWidth = 5;
-                    canvasCtx.strokeStyle = "#ff0000";
-                    canvasCtx.stroke();
-                    object.forEach((point) => {
-                        canvasCtx.lineTo(point.x, point.y);
-                    });
-                });
+                draw(response, color);
             })
             .catch((error) => {
                 console.log(error);
             });
     };
 
-    const testAiObj = () => {
+    const testAiObj = (layer, color) => {
         axios
             .post(
                 `${config.url}/ai/svgObjects`,
                 {
                     width: 1000,
-                    layer: config.bud,
+                    layer: layer,
                     base64Image: image,
                     minx: swValues.first,
                     miny: swValues.second,
@@ -174,27 +163,33 @@ const Map = () => {
             )
             .then((response) => {
                 console.log(response);
-
-                let canvasCtx = document.getElementById("imageCanvasAi").getContext("2d");
-
-                response.data.forEach((object) => {
-                    canvasCtx.moveTo(object[0].x, object[0].y);
-                    canvasCtx.lineWidth = 2;
-                    canvasCtx.strokeStyle = "#00ff00";
-                    canvasCtx.stroke();
-                    object.forEach((point) => {
-                        canvasCtx.lineTo(point.x, point.y);
-                    });
-                });
+                draw(response, color);
             })
             .catch((error) => {
                 console.log(error);
             });
     };
-
+    const draw = (response, color) => {
+        let canvasCtx = document.getElementById("imageCanvasAi").getContext("2d");
+        response.data.forEach((object) => {
+            canvasCtx.strokeStyle = color;
+            canvasCtx.lineWidth = 4;
+            canvasCtx.beginPath();
+            for (let i = 0; i < object.length; i++) {
+                if (i === 0) canvasCtx.moveTo(object[i].x, object[i].y);
+                else canvasCtx.lineTo(object[i].x, object[i].y);
+            }
+            canvasCtx.stroke();
+        });
+    };
+    const drawAll = () => {
+        for (let i = 0; i < selectedOptions.length; i++) {
+            testAiObj(selectedOptions[i].value, colors[i]);
+        }
+    };
     const refresh = () => {
         setImage(null);
-    }
+    };
 
     return (
         <div className="container-fluid bg-dark">
@@ -246,7 +241,7 @@ const Map = () => {
                         isMulti
                     />
                 </div>
-                <Button className="col text-dark" onClick={testAiObj}>
+                <Button className="col text-dark" onClick={drawAll}>
                     GET OUTLINES
                 </Button>
                 {image ? (
@@ -280,4 +275,3 @@ const Map = () => {
 };
 
 export default Map;
-
