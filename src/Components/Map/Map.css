@@ -28,7 +28,48 @@
   border-radius: 5px;
 }
 
-Button {
-  background-color: #51D0E6 !important;
-  border-color: #51D0E6 !important;
+.container-fluid {
+  /* background-color: #51D0E6 !important; */
 }
+
+.btncolor {
+  background-color: #51D0E6 !important;
+  border-color: #51D0E6 !important
+}
+
+Button {
+  /* background-color: #51D0E6 !important;
+  border-color: #51D0E6 !important; */
+  font-size: 20px !important;
+  font-weight: bold !important;
+  width: 500px !important;
+}
+
+.select {
+  width: 500px !important;
+}
+
+.control {
+  margin: auto 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#imageContainer {
+  margin-top: 10px;
+  margin: auto 15%;
+  position: relative;
+}
+
+/* #imageCanvas {
+  position: relative;
+} */
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+} 
+
