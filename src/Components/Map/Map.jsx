@@ -227,7 +227,7 @@ const Map = () => {
                 </div>
             </div>
             <div className="control">
-                <Button className="col text-dark" onClick={sendSquare}>
+                <Button className="col text-dark btncolor" onClick={sendSquare}>
                     GET DATA
                 </Button>
                 <div className="select">
@@ -241,11 +241,11 @@ const Map = () => {
                         isMulti
                     />
                 </div>
-                <Button className="col text-dark" onClick={drawAll}>
+                <Button className="col text-dark btncolor" onClick={drawAll}>
                     GET OUTLINES
                 </Button>
                 {image ? (
-                    <Button className="col text-dark mt-4" onClick={refresh}>
+                    <Button className="col text-dark mt-4 btncolor" onClick={refresh}>
                         REMOVE
                     </Button>
                 ) : (
@@ -260,16 +260,6 @@ const Map = () => {
             ) : (
                 <div className="placeholder"></div>
             )}
-            {/* <div id="imageContainer">
-                {image ? (
-                    <div>
-                        <canvas id="imageCanvas" width="1000" height="1000" />
-                        <canvas id="imageCanvasAi" width="1000" height="1000" />
-                    </div>
-                ) : (
-                    <div></div>
-                )}
-            </div> */}
         </div>
     );
 };
