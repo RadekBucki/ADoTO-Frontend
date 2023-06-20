@@ -2,10 +2,20 @@
     background-color: #51d0e6;
 }
 
-.mediumPadding {
+.mediumPaddingTop {
     padding-top: 15rem;
 }
 
-.smallPadding {
-    padding-top: 8rem;
+.mediumPaddingBottom {
+    padding-bottom: 15rem;
+}
+
+.smallPaddingTop {
+    padding-top: 6rem;
+}
+
+.reloadImage {
+    display: block;
+    max-width: 20%;
+    height: auto;
 }
