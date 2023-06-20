@@ -31,6 +31,7 @@ const Map = () => {
     const [neValues, setNeValues] = useState([]);
     const [selectedOptions, setSelectedOptions] = useState();
     const [image, setImage] = useState(null);
+    const [legend, setLegend] = useState([]);
     const position = [51.76, 19.46];
     const colors = ["red", "green", "blue", "orange"];
     const svgColors = ["yellow", "purple", "pink", "brown"];
@@ -43,7 +44,11 @@ const Map = () => {
             ...obj,
         });
     };
-
+    const addColor = (name, color) => {
+        const newElement = { name: name, color: color };
+        console.log(newElement);
+        setLegend((x) => [...x, newElement]);
+    };
     const handleSetSw = () => {
         const obj = {
             first: swValues.first,
@@ -140,6 +145,7 @@ const Map = () => {
             .then((response) => {
                 console.log(response);
                 draw(response, color);
+                addColor(`BDOT_${layer}`, color);
             })
             .catch((error) => {
                 console.log(error);
@@ -168,6 +174,7 @@ const Map = () => {
             .then((response) => {
                 console.log(response);
                 draw(response, color);
+                addColor(`AI_${layer}`, color);
             })
             .catch((error) => {
                 console.log(error);
@@ -195,6 +202,7 @@ const Map = () => {
     };
     const refresh = () => {
         let canvasCtx = document.getElementById("imageCanvasAi").getContext("2d");
+        setLegend([]);
         canvasCtx.clearRect(0, 0, 1000, 1000);
     };
 
@@ -251,13 +259,22 @@ const Map = () => {
                 <Button className="col text-dark btncolor" onClick={drawAll}>
                     GET OUTLINES
                 </Button>
+
                 {image ? (
                     <Button className="col text-dark mt-4 btncolor" onClick={refresh}>
                         REMOVE
                     </Button>
                 ) : (
-                    ""
+                    <div className="placeholder"></div>
                 )}
+                <div className="legend">
+                    {legend.map((obj) => (
+                        <div key={obj.color} className="align">
+                            <label>{obj.name}</label>
+                            <div className="circle" style={{ background: `${obj.color}` }}></div>
+                        </div>
+                    ))}
+                </div>
             </div>
             {image ? (
                 <div id="imageContainer">
@@ -272,3 +289,4 @@ const Map = () => {
 };
 
 export default Map;
+
