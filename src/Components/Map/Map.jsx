@@ -8,6 +8,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import Select from "react-select";
+import { canvas } from "leaflet";
 window.type = true;
 
 const Map = () => {
@@ -126,9 +127,11 @@ const Map = () => {
         img.src = imageUrl;
         img.onload = function () {
             let canvasCtx = document.getElementById("imageCanvas").getContext("2d");
+            // canvasCtx.clearRect(0, 0, 1000, 1000);
             canvasCtx.drawImage(img, 0, 0);
         };
     };
+
     const testSvgObj = (layer, color) => {
         axios
             .get(
@@ -184,15 +187,15 @@ const Map = () => {
         });
     };
     const drawAll = () => {
-        const imageUrl = `data:image/png;base64,${image}`;
-        displayImage(imageUrl);
+        refresh();
         for (let i = 0; i < selectedOptions.length; i++) {
             testAiObj(selectedOptions[i].value, colors[i]);
             testSvgObj(selectedOptions[i].value, svgColors[i]);
         }
     };
     const refresh = () => {
-        setImage(null);
+        let canvasCtx = document.getElementById("imageCanvasAi").getContext("2d");
+        canvasCtx.clearRect(0, 0, 1000, 1000);
     };
 
     return (
