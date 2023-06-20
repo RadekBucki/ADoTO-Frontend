@@ -1,0 +1,32 @@
+.backgroundIssues {
+    background-color: #51d0e6;
+}
+
+.mediumPaddingTop {
+    padding-top: 15rem;
+}
+
+.mediumPaddingBottom {
+    padding-bottom: 15rem;
+}
+
+.smallPaddingTop {
+    padding-top: 6rem;
+}
+
+.reloadImage {
+    display: block;
+    max-width: 20%;
+    height: auto;
+}
+
+.btn-issue {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.btn-issue:hover,
+.btn-issue:hover {
+    color: #000000;
+    background-color: #ffffff;
+}
