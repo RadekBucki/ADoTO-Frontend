@@ -32,6 +32,7 @@ const Map = () => {
     const [image, setImage] = useState(null);
     const position = [51.76, 19.46];
     const colors = ["red", "green", "blue", "orange"];
+    const svgColors = ["yellow", "purple", "pink", "brown"];
     const handleSetNe = () => {
         const obj = {
             first: neValues.first,
@@ -183,8 +184,11 @@ const Map = () => {
         });
     };
     const drawAll = () => {
+        const imageUrl = `data:image/png;base64,${image}`;
+        displayImage(imageUrl);
         for (let i = 0; i < selectedOptions.length; i++) {
             testAiObj(selectedOptions[i].value, colors[i]);
+            testSvgObj(selectedOptions[i].value, svgColors[i]);
         }
     };
     const refresh = () => {
