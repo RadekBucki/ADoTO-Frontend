@@ -61,7 +61,7 @@ const Issues = () => {
                     <img src={imgGeoportal} alt="Geoportal logo"/>
                 </div>
 
-                <Navbar />
+                <Navbar issueClasses={classes['btn-issue']} />
             </div>
     );
 };
