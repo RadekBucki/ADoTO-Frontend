@@ -6,16 +6,16 @@ import 'slick-carousel/slick/slick-theme.css';
 import classes from './ImageCarousel.module.css';
 
 const ImageCarousel = () => {
-    const images = [
-        'src/assets/globe_img.avif',
-        'src/assets/globe_img.avif',
-        'src/assets/globe_img.avif',
-      ];
-      
+  const images = [
+    'src/assets/map_example_img.png',
+    'src/assets/get_data_img.png',
+    'src/assets/outlined_image.png'
+  ];
 
-  const customPaging = (index) => {
+
+  const customPaging = () => {
     return (
-      <div className={classes.carousel_dot}></div>
+      <div className={`${classes.carousel_dot} bg-black`} ></div>
     );
   };
 
@@ -46,4 +46,3 @@ const ImageCarousel = () => {
 
 export default ImageCarousel;
 
-  

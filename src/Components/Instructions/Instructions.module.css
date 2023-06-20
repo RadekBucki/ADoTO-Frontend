@@ -1,0 +1,10 @@
+  .map_button {
+      background-color: #000000 !important;
+      color: #51D0E6;
+      border: none;
+      cursor: pointer;
+  }
+
+  .li_elements li {
+      margin-top: 40px;
+  }
