@@ -192,6 +192,10 @@ const Map = () => {
             });
     };
 
+    const refresh = () => {
+        setImage(null);
+    }
+
     return (
         <div className="container-fluid bg-dark">
             <div className="row">
@@ -245,10 +249,32 @@ const Map = () => {
                 <Button className="col text-dark" onClick={testAiObj}>
                     GET OUTLINES
                 </Button>
+                {image ? (
+                    <Button className="col text-dark mt-4" onClick={refresh}>
+                        REMOVE
+                    </Button>
+                ) : (
+                    ""
+                )}
             </div>
-            <div id="imageContainer"></div>
-            <canvas id="imageCanvas" width="1000" height="1000" />
-            <canvas id="imageCanvasAi" width="1000" height="1000" />
+            {image ? (
+                <div id="imageContainer">
+                    <canvas id="imageCanvas" width="1000" height="1000" />
+                    <canvas id="imageCanvasAi" width="1000" height="1000" />
+                </div>
+            ) : (
+                <div className="placeholder"></div>
+            )}
+            {/* <div id="imageContainer">
+                {image ? (
+                    <div>
+                        <canvas id="imageCanvas" width="1000" height="1000" />
+                        <canvas id="imageCanvasAi" width="1000" height="1000" />
+                    </div>
+                ) : (
+                    <div></div>
+                )}
+            </div> */}
         </div>
     );
 };

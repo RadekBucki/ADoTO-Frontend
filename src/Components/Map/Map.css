@@ -51,3 +51,20 @@ Button {
   justify-content: center;
   align-items: center;
 }
+
+#imageContainer {
+  margin-top: 10px;
+  margin: auto 15%;
+  position: relative;
+}
+
+/* #imageCanvas {
+  position: relative;
+} */
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+} 
+
