@@ -1,6 +1,7 @@
 import classes from "./Landing.module.css";
 import Navbar from "../Navbar/Navbar";
 import ImageCarousel from "../ImageCarousel/ImageCarousel";
+import Instructions from '../Instructions/Instructions';
 
 function Landing() {
     return (

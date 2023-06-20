@@ -1,40 +1,36 @@
 .carousel_dots {
-    position: absolute;
-    bottom: 20px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .carousel_dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #ccc;
-    margin: 0 5px;
-    cursor: pointer;
-  }
-  
-  .carousel_dot.slick_active {
-    background-color: #000;
-  }
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  padding: 0;
+}
 
-  .carousel_container {
-    width: 550px;
-    height: 500px; 
-    margin: 0 auto;
-    overflow: hidden;
-  }
-  
-  .carousel_image {
-    width: 100%;
-    height: auto;
-    max-height: 400px; 
-    object-fit:cover;
-  }
-  
-  
-  
-  
+.carousel_dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.carousel_dot.slick_active {
+  background-color: #000;
+}
+
+.carousel_container {
+  width: 550px;
+  height: 430px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.carousel_image {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+}
