@@ -11,6 +11,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Landing from './Components/Landing/Landing';
+import Issues from "./Components/Issues/Issues";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: "/map",
     element: <App/>
+  },
+  {
+    path: "/issues",
+    element: <Issues/>
   }
 ]);
 
