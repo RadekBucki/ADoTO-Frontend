@@ -132,7 +132,8 @@ const Map = () => {
         img.src = imageUrl;
         img.onload = function () {
             let canvasCtx = document.getElementById("imageCanvas").getContext("2d");
-            // canvasCtx.clearRect(0, 0, 1000, 1000);
+            let canvasCtxAi = document.getElementById("imageCanvasAi").getContext("2d");
+            canvasCtxAi.clearRect(0, 0, 1000, 1000);
             canvasCtx.drawImage(img, 0, 0);
         };
     };
