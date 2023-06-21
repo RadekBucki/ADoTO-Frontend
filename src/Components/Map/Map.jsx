@@ -135,6 +135,7 @@ const Map = () => {
             let canvasCtxAi = document.getElementById("imageCanvasAi").getContext("2d");
             canvasCtxAi.clearRect(0, 0, 1000, 1000);
             canvasCtx.drawImage(img, 0, 0);
+            setLegend([]);
         };
     };
 
